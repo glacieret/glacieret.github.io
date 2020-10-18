@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>三星索引 &#8212; INDEX 1.0.0 文档</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="GeoHash 之「附近的人」" href="../redis/redis-geohash.html" />
+    <link rel="prev" title="从 MySQL 迁移到 PostgreSQL 需要注意的事" href="mysql2pg.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>三星索引<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p><strong>三星索引</strong>，可能是对于一个查询语句来说最好的索引了。顾名思义，三星索引是满足了三个性及的索引。那么，这三个星级是怎么给定的呢？</p>
+<p>★☆☆</p>
+<ul class="simple">
+<li><p>定义：如果与一个查询相关的索引行是相邻的，或者至少相距足够靠近的话，那这个索引就可以标记上一颗星。</p></li>
+<li><p>收益：它最小化了必须扫描的索引片的宽度。</p></li>
+<li><p>实现：把 WHERE
+后的等值条件列作为索引最开头的列，如此，必须扫描的索引片宽度就会缩至最短。</p></li>
+</ul>
+<p>★★☆</p>
+<ul class="simple">
+<li><p>定义：如果索引行的顺序与查询语句的需求一致，则索引可以标记上第二颗星。</p></li>
+<li><p>收益：它排除了排序操作。收益：它排除了排序操作。</p></li>
+<li><p>实现：将 ORDER BY 列加入到索引中，保持列的顺序。</p></li>
+</ul>
+<p>★★★</p>
+<ul class="simple">
+<li><p>定义：如果索引行中包含查询语句中的所有列，那么这个索引就可以标记上第三颗星。</p></li>
+<li><p>收益：这避免了访问表的操作（避免了回表操作），只访问索引就可以满足了。</p></li>
+<li><p>实现：将查询语句中剩余的列都加入到索引中。</p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">INDEX</a></h1>
+
+
+
+
+
+
+
+
+<h3>导航</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../category/database.html">数据存储</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../category/database.html#mysql">MySQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../category/database.html#redis">Redis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../category/mq.html">消息队列</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../category/cloud.html">容器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../category/cloud.html#id2">云与云存储</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../category/ds.html">数据结构</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../category/golang.html">Golang</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../category/ml.html">人工智能学习笔记</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../category/book.html">读书笔记</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../category/about.html">关于我</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../../category/database.html">数据存储</a><ul>
+      <li>Previous: <a href="mysql2pg.html" title="上一章">从 MySQL 迁移到 PostgreSQL 需要注意的事</a></li>
+      <li>Next: <a href="../redis/redis-geohash.html" title="下一章">GeoHash 之「附近的人」</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020; <a href="http://www.beian.miit.gov.cn">皖ICP备18013831号</a>.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
