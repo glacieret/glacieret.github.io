@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>[索引]入门介绍 &#8212; INDEX 1.0.0 文档</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="[索引]三星索引" href="index-3starts.html" />
+    <link rel="prev" title="[基础] 一条更新 SQL 语句是怎么执行的" href="mysql-base-02.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>[索引]入门介绍<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p><strong>目录：</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#id2">聚簇索引与非聚簇索引</a></p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="id2">
+<h2>聚簇索引与非聚簇索引<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id3">
+<h3>定义与区别<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p><strong>聚簇索引</strong>，通俗来讲就是在索引结构（B+树）的叶子节点上保存着行数据，这样的索引结构就叫做聚簇索引。</p>
+<p>同理，<strong>非聚簇索引</strong>
+的叶子节点上则没有保存行数据，相对的，非聚簇索引的叶子节点上保存的是<strong>主键ID</strong>。</p>
+<p>在 InnoDB 引擎中主键索引使用的是聚簇索引，二级索引是非聚簇索引。而
+MyISAM 引擎中的索引都是非聚簇索引。</p>
+<blockquote>
+<div><p>注意，InnoDB
+中如果表没有主键，则会有一个唯一的<code class="docutils literal notranslate"><span class="pre">Row</span> <span class="pre">ID</span></code>来建立聚簇索引。</p>
+</div></blockquote>
+<p>下图可以看到 <strong>聚簇索引</strong> 与 <strong>非聚簇索引</strong> 的区别：</p>
+<img alt="../../_images/mysql-index-clusted.png" src="../../_images/mysql-index-clusted.png" />
+<ol class="arabic simple">
+<li><p>对于 <strong>聚簇索引</strong>
+来说，表数据是和主键一起存储的，主键索引的叶子节点存储行数据（包含主键值），二级索引的叶子节点存储行的主键值。索引使用的是
+<strong>B+树</strong>
+作为索引的存储结构，非叶子节点的都是索引关键字，但是非叶子节点中不存储对应的行数据信息或行数据地址。叶子节点上的数据是主键与具体行数据。</p></li>
+<li><p>对于 <strong>非聚簇索引</strong>
+来说，表数据和索引是分成两部分存储的，主键索引和二级索引存储在储存上没有区别。都是使用
+<strong>B+树</strong>
+作为索引存储结构，所有的节点都是索引关键字，叶子节点上存储的索引关键字及其对应的行数据地址。</p></li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h3>聚簇索引的优缺点<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p><strong>优点</strong>：</p>
+<ol class="arabic simple">
+<li><p>当进行范围查询时，聚簇索引优于非聚簇索引</p></li>
+<li><p>精准定位查询行数据时，聚簇索引速度优于非聚簇索引，这是因为非聚簇索引定位到主键时还需要多一次寻址操作</p></li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol class="arabic simple">
+<li><p><strong>聚簇索引的插入速度严重依赖于插入速度</strong>，按主键顺序插入速度最快，否则可能会出现
+<strong>页分裂</strong> ,验证影响性能。因此，InnoDB 表一般都会定义一个自曾主键。</p></li>
+<li><p><strong>更新主键的代价很高，更新行会出现索引重建</strong>。因此，InnoDB
+表一般定义为主键不可更新。</p></li>
+<li><p><strong>带有聚簇索引的表结构中，二级索引查询数据需要回表操作</strong>，需要两次索引查找才能找到目标行数据。</p></li>
+<li><p><strong>采用聚簇索引插入新数据时比非聚簇索引插入新数据慢</strong>，因为插入要保证主键不能重复，需要遍历索引的所有叶子节点，而聚簇索引的叶子节点上带有实际行数据，数据较大，会有更多的
+I/O 消耗。</p></li>
+</ol>
+<p><strong>补充</strong>：</p>
+<ol class="arabic simple">
+<li><p><strong>覆盖索引</strong>
+覆盖索引是指在一次查询中，需要查询的结果字段都被定义在索引中，减少了一次
+<strong>回表</strong> 操作。</p></li>
+<li><p><strong>回表</strong>
+在采用聚簇索引的表结构中，一次查询如果命中二级索引，且不是覆盖索引查询时，需要根据二级索引拿到的主键，到主键索引中查询具体的行数据，这个操作叫做
+<strong>回表</strong> 。</p></li>
+</ol>
+<p><a class="reference external" href="#">返回顶部⬆︎</a></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">INDEX</a></h1>
+
+
+
+
+
+
+
+
+<h3>导航</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../category/database.html">数据存储</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../category/database.html#mysql">MySQL  –  数据库引擎、索引结构、实现原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../category/database.html#redis">Redis  –  底层实现、应用场景</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../category/mq.html">消息队列</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../category/cloud.html">容器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../category/cloud.html#id2">云与云存储</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../category/ds.html">数据结构</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../category/golang.html">Golang</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../category/ml.html">人工智能学习笔记</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../category/book.html">读书笔记</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../category/about.html">关于我</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../../category/database.html">数据存储</a><ul>
+      <li>Previous: <a href="mysql-base-02.html" title="上一章">[基础] 一条更新 SQL 语句是怎么执行的</a></li>
+      <li>Next: <a href="index-3starts.html" title="下一章">[索引]三星索引</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
