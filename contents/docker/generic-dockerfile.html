@@ -4,14 +4,14 @@
 <html lang="zh_CN">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>基于 Alpine 的通用 Dockerfile 模板 &#8212; INDEX 1.0.0 文档</title>
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
     <script src="../../_static/translations.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
@@ -35,35 +35,24 @@
             
   <div class="section" id="alpine-dockerfile">
 <span id="generic-dockerfile"></span><h1>基于 Alpine 的通用 Dockerfile 模板<a class="headerlink" href="#alpine-dockerfile" title="永久链接至标题">¶</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">alpine</span><span class="p">:</span><span class="mf">3.10</span>
-
-<span class="n">MAINTAINER</span> <span class="n">DUNWEI</span> <span class="s2">&quot;dunwei.work@gmail.com&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">alpine</span><span class="p">:</span><span class="mf">3.12</span>
 
 <span class="c1"># 使用清华软件源</span>
-<span class="c1"># RUN echo https://mirror.tuna.tsinghua.edu.cn/alpine/v3.10/main/ &gt; /etc/apk/repositories &amp;&amp; \</span>
-<span class="c1">#     echo https://mirror.tuna.tsinghua.edu.cn/alpine/v3.10/community/ &gt;&gt; /etc/apk/repositories</span>
+<span class="c1"># RUN echo https://mirror.tuna.tsinghua.edu.cn/alpine/v3.12/main/ &gt; /etc/apk/repositories &amp;&amp; \</span>
+<span class="c1">#     echo https://mirror.tuna.tsinghua.edu.cn/alpine/v3.12/community/ &gt;&gt; /etc/apk/repositories</span>
 
 <span class="c1"># 使用阿里云软件源</span>
-<span class="c1"># RUN echo http://mirrors.aliyun.com/alpine/v3.10/main/ &gt; /etc/apk/repositories &amp;&amp; \</span>
-<span class="c1">#     echo http://mirrors.aliyun.com/alpine/v3.10/community/ &gt;&gt; /etc/apk/repositories</span>
+<span class="c1"># RUN echo http://mirrors.aliyun.com/alpine/v3.12/main/ &gt; /etc/apk/repositories &amp;&amp; \</span>
+<span class="c1">#     echo http://mirrors.aliyun.com/alpine/v3.12/community/ &gt;&gt; /etc/apk/repositories</span>
 
 <span class="c1"># root 用户密码</span>
 <span class="n">ENV</span> <span class="n">ROOT_PASSWD</span><span class="o">=</span><span class="n">password</span>
 
-<span class="c1"># 指定当前工作目录</span>
-<span class="c1"># WORKDIR /work</span>
-
-<span class="c1"># 执行文件复制工作 ADD or COPY</span>
-<span class="c1"># ADD executefile /work/executefile</span>
-
-<span class="c1"># 文件权限</span>
-<span class="c1"># RUN chmod 777 /work/executefile</span>
-
 
 <span class="c1"># 更新软件源 &amp;&amp; 修改时区</span>
 
-<span class="n">RUN</span> <span class="n">echo</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">aliyun</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">alpine</span><span class="o">/</span><span class="n">v3</span><span class="o">.</span><span class="mi">10</span><span class="o">/</span><span class="n">main</span><span class="o">/</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apk</span><span class="o">/</span><span class="n">repositories</span> \
-    <span class="o">&amp;&amp;</span> <span class="n">echo</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">aliyun</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">alpine</span><span class="o">/</span><span class="n">v3</span><span class="o">.</span><span class="mi">10</span><span class="o">/</span><span class="n">community</span><span class="o">/</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apk</span><span class="o">/</span><span class="n">repositories</span> \
+<span class="n">RUN</span> <span class="n">echo</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">aliyun</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">alpine</span><span class="o">/</span><span class="n">v3</span><span class="o">.</span><span class="mi">12</span><span class="o">/</span><span class="n">main</span><span class="o">/</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apk</span><span class="o">/</span><span class="n">repositories</span> \
+    <span class="o">&amp;&amp;</span> <span class="n">echo</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">aliyun</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">alpine</span><span class="o">/</span><span class="n">v3</span><span class="o">.</span><span class="mi">12</span><span class="o">/</span><span class="n">community</span><span class="o">/</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apk</span><span class="o">/</span><span class="n">repositories</span> \
     <span class="o">&amp;&amp;</span> <span class="n">apk</span> <span class="n">update</span> \
     <span class="o">&amp;&amp;</span> <span class="n">apk</span> <span class="n">upgrade</span> \
     <span class="o">&amp;&amp;</span> <span class="n">apk</span> <span class="n">add</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">cache</span> <span class="n">tzdata</span> \
@@ -75,6 +64,15 @@
 
 <span class="c1"># 切换当前用户</span>
 <span class="n">USER</span> <span class="n">runner</span>
+
+<span class="c1"># 指定当前工作目录</span>
+<span class="c1"># WORKDIR /work</span>
+
+<span class="c1"># 执行文件复制工作 ADD or COPY</span>
+<span class="c1"># ADD executefile /work/executefile</span>
+
+<span class="c1"># 文件权限</span>
+<span class="c1"># RUN chmod 777 /work/executefile</span>
 
 <span class="c1"># 执行目标二进制文件</span>
 <span class="c1"># CMD [&quot;./executefile&quot;, &quot;params&quot;...]</span>
@@ -162,7 +160,7 @@
       &copy;.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -4,14 +4,14 @@
 <html lang="zh_CN">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1. 与环境交互 &#8212; INDEX 1.0.0 文档</title>
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
     <script src="../../_static/translations.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
@@ -35,14 +35,14 @@
             
   <div class="section" id="chapter1">
 <span id="id1"></span><h1><span class="section-number">1. </span>与环境交互<a class="headerlink" href="#chapter1" title="永久链接至标题">¶</a></h1>
-<p><strong>目录：</strong></p>
-<blockquote>
-<div><ul class="simple">
+<dl class="simple">
+<dt><strong>目录：</strong></dt><dd><ul class="simple">
 <li><p><a class="reference internal" href="#golang">检查Golang版本</a></p></li>
 <li><p><a class="reference internal" href="#id5">接收程序参数</a></p></li>
 <li><p><a class="reference internal" href="#flag">使用 flag 包创建程序接口</a></p></li>
 </ul>
-</div></blockquote>
+</dd>
+</dl>
 <div class="section" id="golang">
 <h2><span class="section-number">1.1. </span>检查Golang版本<a class="headerlink" href="#golang" title="永久链接至标题">¶</a></h2>
 <p>当构建一个程序，特别是你的应用程序很复杂的时候，最好的实践是输出一下环境设置、构建版本以及运行时版本。这有助于分析问题，防止发生错误。</p>
@@ -95,7 +95,7 @@
 <h3><span class="section-number">1.1.3. </span>原理<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">runtime</span></code> 包涵盖了很多有用的函数。比如查看 Go 的运行时版本可以使用 <code class="docutils literal notranslate"><span class="pre">Version</span></code> 函数。文档表明该函数返回提交时的哈希值，以及二进制文件构建时的日期和标记。</p>
 <p><code class="docutils literal notranslate"><span class="pre">Version</span></code> 函数实际上返回的是常量  <code class="docutils literal notranslate"><span class="pre">runtime/internal/sys.TheVersion</span></code>。这个常量位于 <code class="docutils literal notranslate"><span class="pre">$GOPATH/src/runtime/internal/sys/zversion.go</span></code> 文件中。</p>
-<p>这个 <code class="docutils literal notranslate"><span class="pre">.go</span></code> 文件由 <code class="docutils literal notranslate"><span class="pre">go</span> <span class="pre">dist</span></code> 工具生成，并且由 <code class="docutils literal notranslate"><span class="pre">go/src/cmd/dist/build.go</span></code> 中的 <cite>findversion</cite> 这个函数判定 Go 的版本，下面会详细说明。</p>
+<p>这个 <code class="docutils literal notranslate"><span class="pre">.go</span></code> 文件由 <code class="docutils literal notranslate"><span class="pre">go</span> <span class="pre">dist</span></code> 工具生成，并且由 <code class="docutils literal notranslate"><span class="pre">go/src/cmd/dist/build.go</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">findversion</span></code> 这个函数判定 Go 的版本，下面会详细说明。</p>
 <p>在判定 Go 版本的时候，优先级最高的是 <code class="docutils literal notranslate"><span class="pre">$GOROOT/VERSION</span></code> 文件，如果这个文件为空或不存在的话，则查看 <code class="docutils literal notranslate"><span class="pre">$GOROOT/VERSION.cache</span></code> 文件。如果 <code class="docutils literal notranslate"><span class="pre">$GOROOT/VERSION.cache</span></code> 文件也找不到的话，那么工具会尝试从 Git 信息中判断 Go 版本，前提是已经为 Go 代码创建 Git 仓库。</p>
 </div>
 </div>
@@ -329,7 +329,7 @@
       &copy;.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>[索引]三星索引 &#8212; INDEX 1.0.0 文档</title>
+    <title>Golang runtime 运行时分析 &#8212; INDEX 1.0.0 文档</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script src="../../_static/translations.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="MySQL 性能优化笔记[1]" href="mysql-optimize-01.html" />
-    <link rel="prev" title="[索引]入门介绍" href="db-index.html" />
+    <link rel="next" title="Go 代码优化" href="../go-tool/effective.html" />
+    <link rel="prev" title="Golang" href="../../category/golang.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -33,28 +33,26 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="id1">
-<h1>[索引]三星索引<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
-<p><strong>三星索引</strong>，可能是对于一个查询语句来说最好的索引了。顾名思义，三星索引是满足了三个性及的索引。那么，这三个星级是怎么给定的呢？</p>
-<p>★☆☆</p>
-<ul class="simple">
-<li><p>定义：如果与一个查询相关的索引行是相邻的，或者至少相距足够靠近的话，那这个索引就可以标记上一颗星。</p></li>
-<li><p>收益：它最小化了必须扫描的索引片的宽度。</p></li>
-<li><p>实现：把 WHERE
-后的等值条件列作为索引最开头的列，如此，必须扫描的索引片宽度就会缩至最短。</p></li>
+  <div class="section" id="golang-runtime">
+<span id="analyze-runtime"></span><h1>Golang runtime 运行时分析<a class="headerlink" href="#golang-runtime" title="永久链接至标题">¶</a></h1>
+<p><strong>目录：</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#gmp">调度分析 - GMP调度模型</a></p></li>
+<li><p><a class="reference internal" href="#gc">GC 分析 - 三色标记与混合写屏障</a></p></li>
 </ul>
-<p>★★☆</p>
-<ul class="simple">
-<li><p>定义：如果索引行的顺序与查询语句的需求一致，则索引可以标记上第二颗星。</p></li>
-<li><p>收益：它排除了排序操作。收益：它排除了排序操作。</p></li>
-<li><p>实现：将 ORDER BY 列加入到索引中，保持列的顺序。</p></li>
-</ul>
-<p>★★★</p>
-<ul class="simple">
-<li><p>定义：如果索引行中包含查询语句中的所有列，那么这个索引就可以标记上第三颗星。</p></li>
-<li><p>收益：这避免了访问表的操作（避免了回表操作），只访问索引就可以满足了。</p></li>
-<li><p>实现：将查询语句中剩余的列都加入到索引中。</p></li>
-</ul>
+</div></blockquote>
+<div class="section" id="gmp">
+<h2>调度分析 - GMP调度模型<a class="headerlink" href="#gmp" title="永久链接至标题">¶</a></h2>
+<p>众所周志，Golang 的优势就在于它的运行高效，在处理高并发问题上大有优势。</p>
+<p>那么，Golang 是如何撑起高并发请求的呢？这就是 Golang 运行时高效调度的功劳了。</p>
+<p>先来分析一下 Golang 为了高并发处理在底层究竟做了什么。</p>
+<p>我们知道，操作系统在处理并发请求时，是通过 CPU 切换线程实现的。多核 CPU 之间实现了并行任务处理。但是，单核 CPU 在同一时间只能处理一个线程的任务。而 CPU 通过线程切换实现了多线程并发机制。但是，<strong>CPU 在线程间切换是很消耗性能的一件事</strong>。</p>
+</div>
+<div class="section" id="gc">
+<h2>GC 分析 - 三色标记与混合写屏障<a class="headerlink" href="#gc" title="永久链接至标题">¶</a></h2>
+<p><a class="reference external" href="#">返回顶部⬆︎</a></p>
+</div>
 </div>
 
 
@@ -74,12 +72,8 @@
 
 
 <h3>导航</h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../../category/database.html">数据存储</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../../category/database.html#mysql">MySQL  –  数据库引擎、索引结构、实现原理</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../category/database.html#redis">Redis  –  底层实现、应用场景</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../category/database.html">数据存储</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../category/mq.html">消息队列</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../category/cloud.html">容器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../category/cloud.html#id2">云与云存储</a></li>
@@ -87,8 +81,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../category/ds.html">数据结构</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../category/golang.html">Golang</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../category/golang.html">Golang</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../category/golang.html#id1">Golang 语言探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../category/golang.html#id2">效率 &amp; 工具</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../category/ml.html">人工智能学习笔记</a></li>
@@ -104,9 +102,9 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../../category/database.html">数据存储</a><ul>
-      <li>Previous: <a href="db-index.html" title="上一章">[索引]入门介绍</a></li>
-      <li>Next: <a href="mysql-optimize-01.html" title="下一章">MySQL 性能优化笔记[1]</a></li>
+  <li><a href="../../category/golang.html">Golang</a><ul>
+      <li>Previous: <a href="../../category/golang.html" title="上一章">Golang</a></li>
+      <li>Next: <a href="../go-tool/effective.html" title="下一章">Go 代码优化</a></li>
   </ul></li>
   </ul></li>
 </ul>

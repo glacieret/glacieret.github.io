@@ -24,7 +24,7 @@ MyISAM 引擎中的索引都是非聚簇索引。
 
 下图可以看到 **聚簇索引** 与 **非聚簇索引** 的区别：
 
-.. image:: ../../_static/images/mysql/mysql-index-clusted.png
+.. image:: /_static/images/mysql/mysql-index-clusted.png
 
 1. 对于 **聚簇索引**
    来说，表数据是和主键一起存储的，主键索引的叶子节点存储行数据（包含主键值），二级索引的叶子节点存储行的主键值。索引使用的是
